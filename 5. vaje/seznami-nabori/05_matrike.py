@@ -12,7 +12,7 @@
 #     [[1, 0, 0], [0, 1, 0], [0, 0, 1]]
 # =============================================================================
 
-def identiteta(n):                         # Definiramo funkcijo, ki sprejme velikost matrike.
+def identiteta(n):                         
     matrika = []                           # Pripravimo prazen seznam za novo matriko.
 
     for i in range(n):                     # Gremo čez vse vrstice matrike.
@@ -34,8 +34,8 @@ def identiteta(n):                         # Definiramo funkcijo, ki sprejme vel
 # elementov matrike.
 # =============================================================================
  
-def sled_matrike(mat):                     # Definiramo funkcijo, ki sprejme matriko.
-    vsota = 0                              # Pripravimo spremenljivko za vsoto diagonale.
+def sled_matrike(mat):                     
+    vsota = 0                              
 
     for i in range(len(mat)):              # Gremo čez indekse vrstic matrike.
         vsota += mat[i][i]                 # Prištejemo element na glavni diagonali.
@@ -51,7 +51,7 @@ def sled_matrike(mat):                     # Definiramo funkcijo, ki sprejme mat
 #     [[1, 3], [2, 4]]
 # =============================================================================
 
-def transponiraj(mat):                     # Definiramo funkcijo, ki sprejme matriko.
+def transponiraj(mat):                     
     transponirana = []                     # Pripravimo prazen seznam za transponirano matriko.
 
     for j in range(len(mat[0])):           # Gremo čez stolpce prvotne matrike.
@@ -73,7 +73,7 @@ def transponiraj(mat):                     # Definiramo funkcijo, ki sprejme mat
 #     [23, 34]
 # =============================================================================
 
-def uporabi(mat, vec):                     # Definiramo funkcijo, ki sprejme matriko in vektor.
+def uporabi(mat, vec):                     
     rezultat = []                          # Pripravimo seznam za rezultat.
 
     for vrstica in mat:                    # Gremo čez vsako vrstico matrike.

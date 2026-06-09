@@ -36,6 +36,21 @@
 #     (10153.3, 15.119547, 46.3368, 348.18036)]
 # =============================================================================
 
+from math import sqrt                                      # uvozimo funkcijo za kvadratni koren
+
+
+def preberi(ime_datoteke):                                # definiramo funkcijo za branje datoteke
+    podatki = []                                          # pripravimo prazen seznam za meritve
+    with open(ime_datoteke, "r") as datoteka:              # odpremo datoteko za branje
+        for vrstica in datoteka:                          # gremo po vseh vrsticah v datoteki
+            vrednosti = vrstica.strip().split(",")         # odstranimo presledke in vrstico razdelimo po vejicah
+            cas = float(vrednosti[0])                      # čas pretvorimo v realno število
+            dolzina = float(vrednosti[1])                  # zemljepisno dolžino pretvorimo v realno število
+            sirina = float(vrednosti[2])                   # zemljepisno širino pretvorimo v realno število
+            visina = float(vrednosti[3])                   # nadmorsko višino pretvorimo v realno število
+            podatki.append((cas, dolzina, sirina, visina))  # meritev dodamo v seznam kot četverico
+    return podatki                                        # vrnemo seznam vseh meritev
+
 # =====================================================================@044761=
 # 2. podnaloga
 # Sestavite funkcijo `razdalja`, ki izračuna zračno razdaljo v metrih
@@ -49,6 +64,20 @@
 #     953.66
 # =============================================================================
 
+def razdalja(tocka1, tocka2):                              # definiramo funkcijo za razdaljo med dvema točkama
+    dolzina1, sirina1, visina1 = tocka1                    # razpakiramo prvo točko
+    dolzina2, sirina2, visina2 = tocka2                    # razpakiramo drugo točko
+
+    razlika_dolzine = abs(dolzina2 - dolzina1) * 60 * 1291 # razliko dolžin pretvorimo iz stopinj v metre
+    razlika_sirine = abs(sirina2 - sirina1) * 60 * 1852    # razliko širin pretvorimo iz stopinj v metre
+    razlika_visine = abs(visina2 - visina1)                # izračunamo višinsko razliko v metrih
+
+    razdalja = sqrt(razlika_dolzine ** 2 +                 # začnemo Pitagorov izračun razdalje
+                    razlika_sirine ** 2 +                  # dodamo kvadrat razlike zemljepisne širine
+                    razlika_visine ** 2)                   # dodamo kvadrat višinske razlike
+
+    return round(razdalja, 2)                              # razdaljo zaokrožimo na dve decimalni mesti
+
 # =====================================================================@044762=
 # 3. podnaloga
 # Sestavite funkcijo `analiza` ki analizira prehojeno pot. Podatke o poti naj
@@ -60,8 +89,51 @@
 #     (7390.9, 5380.14, 72.87, 63.03)
 # =============================================================================
 
+def analiza(ime_datoteke):                                 # definiramo funkcijo za analizo poti
+    podatki = preberi(ime_datoteke)                        # preberemo podatke iz datoteke
+
+    skupni_cas = podatki[-1][0] - podatki[0][0]            # izračunamo razliko med zadnjim in prvim časom
+    skupna_razdalja = 0                                    # pripravimo števec za skupno razdaljo
+    skupni_vzpon = 0                                       # pripravimo števec za skupni vzpon
+    skupni_spust = 0                                       # pripravimo števec za skupni spust
+
+    for i in range(len(podatki) - 1):                      # gremo po zaporednih parih meritev
+        prva = podatki[i]                                  # vzamemo trenutno meritev
+        druga = podatki[i + 1]                             # vzamemo naslednjo meritev
+
+        tocka1 = (prva[1], prva[2], prva[3])               # iz prve meritve naredimo točko brez časa
+        tocka2 = (druga[1], druga[2], druga[3])             # iz druge meritve naredimo točko brez časa
+
+        skupna_razdalja += razdalja(tocka1, tocka2)        # prištejemo razdaljo med zaporednima točkama
+
+        razlika_visine = druga[3] - prva[3]                # izračunamo spremembo nadmorske višine
+
+        if razlika_visine > 0:                             # preverimo, ali se je Janez vzpel
+            skupni_vzpon += razlika_visine                 # pozitivno višinsko razliko prištejemo k vzponu
+        else:                                              # sicer gre za spust ali ni spremembe
+            skupni_spust += abs(razlika_visine)            # negativno razliko prištejemo k spustu kot pozitivno vrednost
+
+    return (round(skupni_cas, 2),                          # vrnemo zaokrožen skupni čas
+            round(skupna_razdalja, 2),                     # vrnemo zaokroženo skupno razdaljo
+            round(skupni_vzpon, 2),                        # vrnemo zaokrožen skupni vzpon
+            round(skupni_spust, 2))                        # vrnemo zaokrožen skupni spust
 
 
+# POVZETEK SNOVI:                                           # kratek povzetek uporabljenih pojmov
+# - Datoteko odpremo z open(..., "r").                       # "r" pomeni branje
+# - with poskrbi, da se datoteka po uporabi sama zapre.      # zato je varnejši način od ročnega zapiranja
+# - Vrstico razdelimo s split(",").                          # podatki so ločeni z vejicami
+# - Besedilo pretvorimo v število s float(...).              # meritve so realna števila
+# - Tuple uporabimo za shranjevanje ene meritve.             # meritev ima več povezanih vrednosti
+# - Seznam uporabimo za shranjevanje vseh meritev.           # v njem je več četveric
+# - Z indeksi dostopamo do posameznih podatkov.              # na primer podatki[0] je prva meritev
+# - Razdaljo izračunamo s Pitagorovim izrekom.               # uporabimo razlike po dolžini, širini in višini
+# - Stopinje pretvorimo v minute z množenjem s 60.           # ena stopinja ima 60 minut
+# - Zemljepisno dolžino nato množimo z 1291.                 # ena minuta dolžine meri 1291 metrov
+# - Zemljepisno širino nato množimo z 1852.                  # ena minuta širine meri 1852 metrov
+# - Vzpon pomeni samo pozitivne višinske razlike.            # štejemo samo, ko je naslednja višina večja
+# - Spust pomeni negativne višinske razlike po absolutni vrednosti. # štejemo, koliko metrov se je spustil
+# - round(..., 2) zaokroži rezultat na dve decimalni mesti.  # to zahteva naloga
 
 
 

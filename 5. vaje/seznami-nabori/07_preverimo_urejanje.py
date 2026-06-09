@@ -18,7 +18,7 @@
 def pripravi_primer(elementi, indeksi):             # Definiramo funkcijo, ki sprejme seznam elementov in seznam indeksov.
     primer = []                                     # Pripravimo prazen seznam za pare.
 
-    for i in range(len(elementi)):                  # Gremo čez indekse seznama elementov.
+    for i in range(len(elementi)):                  # Gremo čez indekse seznama vseh elementov range(len()) - da zanka ve kolikokrat se mora ponoviti. To rabiš zato, da lahko dostopaš do obeh seznamov na istem mestu
         par = (elementi[i], indeksi[i])             # Sestavimo par iz elementa in pripadajočega indeksa.
         primer.append(par)                         # Par dodamo v seznam.
 
@@ -46,6 +46,33 @@ def pravilno_urejen(seznam):                       # Definiramo funkcijo, ki pre
             return False                           # Če ni enak, seznam ni pravilno urejen.
 
     return True                                    # Če so vsi pari na pravih mestih, vrnemo True.
+
+
+# obrazložitev tretje vrstice:
+# if seznam[i][1] != i:
+#    seznam[i] pomeni: vzemi element seznama na mestu i
+# Če imaš na primer: seznam = [("a", 0), ("b", 1), ("c", 2)]
+# potem je:
+# seznam[0]   # ("a", 0)
+# seznam[1]   # ("b", 1)
+# seznam[2]   # ("c", 2)
+# Ker je vsak element par, lahko vzamemo še del para: seznam[i][1]  ... pomeni: vzemi drugi element para na mestu i
+# Na primer:
+# seznam[0][1]   # 0
+# seznam[1][1]   # 1
+# seznam[2][1]   # 2
+# Zato vrstica: if seznam[i][1] != i:  preverja ali je drugi element para različen od trenutnega indeksa?
+# Primer: seznam = [("a", 0), ("b", 1), ("c", 2)]
+# Preverjanje gre tako:
+# i = 0 → seznam[0][1] je 0 → 0 != 0 je False
+# i = 1 → seznam[1][1] je 1 → 1 != 1 je False
+# i = 2 → seznam[2][1] je 2 → 2 != 2 je False
+# Ker ni nobene napake, funkcija vrne True
+# Če pa imaš: seznam = [("a", 0), ("b", 2), ("c", 1)]
+# i = 0 → seznam[0][1] je 0 → v redu
+# i = 1 → seznam[1][1] je 2 → 2 != 1 je True
+# Zato funkcija takoj vrne False
+# Torej: seznam[i][1] vzame številko, shranjeno v paru, i pa je dejansko mesto v seznamu. Funkcija preverja, ali se ti dve številki ujemata.
 
 
 # =============================================================================

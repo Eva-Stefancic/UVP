@@ -21,6 +21,28 @@
 #     (12, -2)
 # =============================================================================
 
+def sprehod(opis):
+
+    x = 0
+    y = 0
+
+    if opis == "":
+        return (0, 0)
+    
+    for znak in opis:
+        if znak == '-':
+            x = x + 1
+            y = y
+        elif znak == 'g':
+            x = x + 1
+            y = y + 1
+        elif znak == 'd':
+            x = x + 1
+            y = y - 1
+    
+    return (x, y)
+
+            
 # =====================================================================@044758=
 # 2. podnaloga
 # Sprehod lahko opišemo krajše, če več zaporednih enakih znakov (več korakov
@@ -35,6 +57,38 @@
 #     (3000, 0)
 # =============================================================================
 
+def strnjen_sprehod(opis):
+    x = 0
+    y = 0
+   
+    trenutna_smer = ""
+    trenutna_dolzina = ""
+
+    for znak in opis:
+        if znak.isdigit():   # Če je znak številka
+            trenutna_dolzina += znak  # jo dodamo k trenutni dolžini.
+        else:                            # Če znak ni številka, potem je smer koraka.
+            if trenutna_dolzina == "":     # Če pred smerjo ni bilo številke,
+                dolzina = 1                # pomeni, da naredimo samo 1 korak.
+            else:                               # Če pa je številka obstajala,
+                dolzina = int(trenutna_dolzina)  # jo pretvorimo v celo število.
+
+            if znak == "g":                       
+                x += dolzina                       
+                y += dolzina                       
+            elif znak == "d":                     
+                x += dolzina                       
+                y -= dolzina                       
+            elif znak == "-":                      
+                x += dolzina                      
+            elif znak == "@":                      # Če je znak @,
+                pass                               # ostanemo na istem mestu.
+
+            trenutna_dolzina = ""                  # Po uporabi dolžino ponastavimo.
+
+    return (x, y)                                  # Vrnemo končno točko sprehoda.
+
+
 # =====================================================================@044759=
 # 3. podnaloga
 # Sestavite funkcijo `najdaljsi_strnjen_sprehod(seznam)`, ki v danem seznamu
@@ -46,6 +100,21 @@
 #     >>> najdaljsi_strnjen_sprehod(l)
 #     '-gg-dg--dlddd'
 # =============================================================================
+
+def najdaljsi_strnjen_sprehod(seznam):             # Definiramo funkcijo, ki sprejme seznam strnjenih sprehodov.
+    rezultat = seznam[0]                           # Za začetek vzamemo prvi sprehod kot najboljši.
+    x, y = strnjen_sprehod(rezultat)               # Izračunamo, kje se prvi sprehod konča.
+    najvecja_razdalja = x ** 2 + y ** 2            # Shranimo kvadrat razdalje od izhodišča.
+
+    for el in seznam[1:]:                          # Pregledamo še vse ostale sprehode.
+        x, y = strnjen_sprehod(el)                 # Izračunamo, kje se trenutni sprehod konča.
+        razdalja = x ** 2 + y ** 2                 # Izračunamo kvadrat razdalje od izhodišča.
+
+        if razdalja > najvecja_razdalja:           # Če je trenutni sprehod daljši od najboljšega do zdaj,
+            rezultat = el                          # si zapomnimo trenutni sprehod kot najboljši.
+            najvecja_razdalja = razdalja           # Posodobimo tudi največjo razdaljo.
+
+    return rezultat                                # Vrnemo opis sprehoda, ki se konča najdlje od izhodišča.   
 
 
 

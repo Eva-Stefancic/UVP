@@ -76,10 +76,79 @@
 # =============================================================================
 
 
+class KodaQR:                                                   # definiramo razred KodaQR
+
+    def __init__(self, n, m):                                   # konstruktor dobi število vrstic in stolpcev
+        self.matrika = []                                       # pripravimo prazen seznam za matriko
+
+        for i in range(n):                                      # ponovimo za vsako vrstico
+            vrstica = []                                        # pripravimo prazno vrstico
+
+            for j in range(m):                                  # ponovimo za vsak stolpec v vrstici
+                vrstica.append(None)                            # dodamo nedoločeno vrednost
+
+            self.matrika.append(vrstica)                        # vrstico dodamo v matriko
+
+    def __str__(self):                                          # metoda vrne niz za izpis kode QR
+        vrstice = []                                            # pripravimo seznam vrstic za izpis
+
+        for vrstica in self.matrika:                            # pregledamo vsako vrstico matrike
+            niz = ""                                            # pripravimo prazen niz za trenutno vrstico
+
+            for element in vrstica:                             # pregledamo vsak element v vrstici
+                if element == None:                             # preverimo, ali vrednost še ni določena
+                    niz += "."                                  # None predstavimo s piko
+                elif element == 0:                              # preverimo, ali je element ničla
+                    niz += " "                                  # ničlo predstavimo s presledkom
+                elif element == 1:                              # preverimo, ali je element enka
+                    niz += "#"                                  # enko predstavimo z znakom #
+
+            vrstice.append(niz)                                 # sestavljeno vrstico dodamo v seznam
+
+        return "\n".join(vrstice)                               # vrstice združimo z znakom za novo vrstico
+
+    def vzorec(self, vzorec, vrstica, stolpec):                  # metoda v matriko zapiše dani vzorec
+        for i in range(len(vzorec)):                             # gremo po vrsticah vzorca
+            for j in range(len(vzorec[i])):                      # gremo po stolpcih vzorca
+                self.matrika[vrstica + i][stolpec + j] = vzorec[i][j] # element vzorca zapišemo na pravo mesto
+
+    def napolni(self, podatki):                                  # metoda napolni nedoločene elemente matrike
+        indeks = 0                                               # indeks pove, kateri podatek bomo zapisali
+        smer = -1                                                # začetna smer je od spodaj navzgor
+
+        for stolpec in range(len(self.matrika[0]) - 1, -1, -1):  # gremo od zadnjega stolpca proti prvemu
+            if smer == -1:                                       # preverimo, ali gremo navzgor
+                vrstice = range(len(self.matrika) - 1, -1, -1)   # vrstice pregledamo od spodaj navzgor
+            else:                                                # sicer gremo navzdol
+                vrstice = range(len(self.matrika))               # vrstice pregledamo od zgoraj navzdol
+
+            for vrstica in vrstice:                              # gremo po vrsticah v izbrani smeri
+                if self.matrika[vrstica][stolpec] == None:       # spreminjamo samo še nedoločene elemente
+                    if indeks < len(podatki):                    # preverimo, ali imamo še kakšen podatek
+                        self.matrika[vrstica][stolpec] = podatki[indeks] # v matriko zapišemo naslednji podatek
+                        indeks += 1                              # premaknemo se na naslednji podatek
+                    else:                                        # če podatkov zmanjka
+                        self.matrika[vrstica][stolpec] = 0       # preostala mesta napolnimo z ničlami
+
+            smer *= -1                                           # po vsakem stolpcu zamenjamo smer premikanja
 
 
-
-
+# POVZETEK SNOVI:                                                # kratek povzetek uporabljene snovi
+# - Razred ustvarimo z besedo class.                              # razred združuje podatke in metode
+# - Konstruktor __init__ se izvede ob nastanku objekta.            # v njem pripravimo začetno stanje objekta
+# - Atribut self.matrika pripada posameznemu objektu.              # self pomeni trenutni objekt
+# - Matrika je seznam seznamov.                                    # vsaka notranja lista predstavlja eno vrstico
+# - None uporabimo za vrednosti, ki še niso določene.              # v tej nalogi pomeni prazno mesto v kodi QR
+# - Metoda __str__ določi, kako se objekt izpiše z print.          # vrniti mora niz
+# - Nize lahko sestavljamo z operatorjem +=.                       # tako postopoma gradimo vrstico izpisa
+# - Vrstice združimo z "\n".join(...).                             # "\n" pomeni skok v novo vrstico
+# - Metoda vzorec vpiše manjšo matriko v večjo matriko.            # uporabimo zamik vrstice in stolpca
+# - Z indeksoma i in j hodimo po vrsticah in stolpcih.             # i predstavlja vrstico, j predstavlja stolpec
+# - Metoda napolni pregleduje stolpce od desne proti levi.         # začnemo v zadnjem stolpcu
+# - Smer premikanja se po vsakem stolpcu zamenja.                  # enkrat gremo gor, naslednjič dol
+# - Spreminjamo samo elemente, ki so enaki None.                   # fiksnih vzorcev ne prepišemo
+# - Če podatkov zmanjka, v prazna mesta zapišemo ničle.            # tako se napolni celotna matrika
+# - range lahko uporabimo tudi za štetje nazaj.                    # na primer range(zacetek, konec, -1)
 
 
 

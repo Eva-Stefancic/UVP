@@ -10,7 +10,7 @@
 #     True
 # =============================================================================
 
-def je_deljivo_s_katerim_od(n, seznam):        # Definiramo funkcijo, ki sprejme število in seznam.
+def je_deljivo_s_katerim_od(n, seznam):        
     for stevilo in seznam:                     # Gremo čez vsa števila v seznamu.
         if stevilo != 0 and n % stevilo == 0:  # Preverimo, ali število deli n.
             return True                        # Če najdemo delitelj, vrnemo True.
@@ -40,7 +40,7 @@ def prastevila_do(n):                          # Definiramo funkcijo, ki sprejme
 # Definirajte funkcijo `je_prastevilo`, ki vrne ali je število praštevilo.
 # =============================================================================
 
-def je_prastevilo(n):                          # Definiramo funkcijo, ki preveri praštevilo.
+def je_prastevilo(n):                          
     if n < 2:                                  # Števila manjša od 2 niso praštevila.
         return False                           # Zato vrnemo False.
 
