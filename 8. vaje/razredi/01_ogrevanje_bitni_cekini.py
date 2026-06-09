@@ -93,14 +93,17 @@ class BitniCekin:
 # Funkcija naj vrne uspešnost transakcije (`True`, če je transakcija uspela,
 # in `False`, če ni).
 # =============================================================================
-def prenesi(racun1, racun2, koliko):
-    if racun1.dvig(koliko):
-        racun2.polog(koliko)
+def prenesi(racun1, racun2, koliko):                         # prenos med računi
+    if racun1.dvig(koliko):                                  # če je dvig uspel
+        racun2.polog(koliko)                                 # položi na drug račun
         return True
     else:
-        return False
+        return False                                         # premalo sredstev
 
-
+# ---------------------------------------------------------------------------
+# POVZETEK: razred BitniCekin z __init__, __str__, __repr__, dvig, polog;
+# prenesi je navadna funkcija za prenos med dvema računoma.
+# ---------------------------------------------------------------------------
 
 
 

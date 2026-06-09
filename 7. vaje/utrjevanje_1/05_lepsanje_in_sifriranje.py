@@ -23,6 +23,13 @@
 #     >>> cik_cak('Attack at dawn!')
 #     ('A...C...D...', '.T.A.K.T.A.N', '..T...A...W.')
 # =============================================================================
+def cik_cak(besedilo):                                       # cik-cak šifriranje v 3 vrstice
+    crke = "".join(c.upper() for c in besedilo if c.isalpha())  # samo velike črke
+    n = len(crke)                                            # dolžina besedila
+    vrstice = [["."] * n for _ in range(3)]                  # 3 vrstice iz pik
+    for i, crka in enumerate(crke):                          # za vsako črko
+        vrstice[[0, 1, 2, 1][i % 4]][i] = crka              # zapis v cik-cak vzorec
+    return tuple("".join(v) for v in vrstice)               # trojica nizov
 
 # =====================================================================@001493=
 # 2. podnaloga
@@ -35,6 +42,9 @@
 #     >>> cik_cak_sifra('Attack at dawn!')
 #     'ACDTAKTANTAW'
 # =============================================================================
+def cik_cak_sifra(besedilo):                                 # zašifrirano besedilo iz cik-cak
+    vrstice = cik_cak(besedilo)                              # dobimo 3 vrstice
+    return "".join(crka for vrstica in vrstice for crka in vrstica if crka != ".")  # brez pik
 
 # =====================================================================@001494=
 # 3. podnaloga
@@ -62,6 +72,8 @@
 #     >>> razrez('   Kakšen\t pastir, \n\ntakšna  čreda. ')
 #     ['Kakšen', 'pastir,', 'takšna', 'čreda.']
 # =============================================================================
+def razrez(besedilo):                                        # razbijanje na besede
+    return besedilo.split()                                  # split po presledkih/tabih/novih vrsticah
 
 # =====================================================================@001495=
 # 4. podnaloga
@@ -90,8 +102,26 @@
 #     pa je oblačno in
 #     temno, žita ne bo.
 # =============================================================================
+def olepsanoBesedilo(s, sir):                                # olepšano besedilo z lomljenjem vrstic
+    besede = razrez(s)                                       # seznam besed
+    vrstice = []                                             # končne vrstice
+    trenutna = ""                                            # besede v trenutni vrstici
+    for beseda in besede:                                    # za vsako besedo
+        if not trenutna:                                     # prva beseda v vrstici
+            trenutna = beseda
+        elif len(trenutna) + 1 + len(beseda) <= sir:         # še gre v vrstico
+            trenutna += " " + beseda
+        else:                                                # nova vrstica
+            vrstice.append(trenutna)
+            trenutna = beseda
+    if trenutna:                                             # zadnja vrstica
+        vrstice.append(trenutna)
+    return "\n".join(vrstice)                                # združimo z novimi vrsticami
 
-
+# ---------------------------------------------------------------------------
+# POVZETEK: cik_cak/cik_cak_sifra za šifriranje; razrez z split();
+# olepsanoBesedilo lomi vrstice po dolžini sir.
+# ---------------------------------------------------------------------------
 
 
 

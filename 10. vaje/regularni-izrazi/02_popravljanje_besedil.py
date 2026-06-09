@@ -20,6 +20,8 @@
 #     'Ananas'
 # ?+ = iščemo vsaj en vprašaj
 # =============================================================================
+import re
+
 def odstrani_veckratne_vprasaje(niz):
     return re.sub(r"\?+", "?", niz)
 # =====================================================================@033402=
@@ -55,7 +57,10 @@ def poenostavi(naloga):
 def enote_na_konec(besedilo):
     return re.sub(r"([$€]) ?(\d+)", r"\2 \1", besedilo)
 
-
+# ---------------------------------------------------------------------------
+# POVZETEK: re.sub za zamenjavo vzorcev; ?+ za več znakov; \d+ za števila;
+# skupine () in \1, \2 za preureditev ujetih delov.
+# ---------------------------------------------------------------------------
 
 
 

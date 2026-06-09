@@ -59,6 +59,8 @@ class Polinom:
 #     >>> p
 #     Polinom([5, 0, 1])
 # =============================================================================
+    def __repr__(self):
+        return f"Polinom({self.koef})"                       # predstavitev za konzolo
 
 # =====================================================================@001744=
 # 4. podnaloga
@@ -69,6 +71,8 @@ class Polinom:
 #     >>> Polinom([3, 2, 1, 0]) == Polinom([3, 2, 1])
 #     True
 # =============================================================================
+    def __eq__(self, other):                                 # primerjava dveh polinomov
+        return self.koef == other.koef
 
 # =====================================================================@001745=
 # 5. podnaloga
@@ -85,6 +89,11 @@ class Polinom:
 #     >>> p(0.725)
 #     4.8310781249999994
 # =============================================================================
+    def __call__(self, x):                                   # vrednost polinoma v točki x
+        vrednost = 0                                         # Hornerjev algoritem
+        for koef in reversed(self.koef):                     # od najvišje stopnje
+            vrednost = vrednost * x + koef
+        return vrednost
 
 # =====================================================================@001746=
 # 6. podnaloga
@@ -214,7 +223,10 @@ class Polinom:
                 return self.koef[self.indeks], self.indeks
         raise StopIteration   #sproži izjemo - naša izjema je ta, a mora ustaviti
 
-
+# ---------------------------------------------------------------------------
+# POVZETEK: razred Polinom z koeficienti; __add__, __mul__, odvod; Hornerjev
+# __call__; __iter__/__next__ za iteracijo po (koeficient, eksponent).
+# ---------------------------------------------------------------------------
 
 
 

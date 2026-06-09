@@ -210,11 +210,10 @@ def gnezdeni_seznami(ime_vhodne, ime_izhodne):
 
         print("</ul>", file=izhod)
 
-
-
-
-
-
+# ---------------------------------------------------------------------------
+# POVZETEK: html2txt odstrani značke med < in >; tabela in seznami generirajo
+# HTML iz besedilne datoteke; gnezdeni_seznami uporablja zamik za globino.
+# ---------------------------------------------------------------------------
 
 
 

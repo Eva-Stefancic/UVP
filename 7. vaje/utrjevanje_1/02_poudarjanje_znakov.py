@@ -10,11 +10,11 @@
 #     >>> poudari("Zadnja novica")
 #     "Z A D N J A   N O V I C A"
 # =============================================================================
-def poudari(naslov):
-    znaki = []
-    for znak in naslov:
-        znaki.append(znak.upper())
-    return " ".join(znaki)
+def poudari(naslov):                                         # poudari vse znake z velikimi črkami
+    znaki = []                                               # seznam znakov
+    for znak in naslov:                                      # za vsak znak
+        znaki.append(znak.upper())                           # pretvori v veliko črko
+    return " ".join(znaki)                                   # združi s presledki
 # =====================================================================@001464=
 # 2. podnaloga
 # Sestavite funkcijo `poudari_besede(naslov)`, ki vrne naslov, v katerem
@@ -23,20 +23,25 @@ def poudari(naslov):
 #     >>> poudari_besede("Zadnja *novica* danes!")
 #     "Zadnja NOVICA danes!"
 # =============================================================================
-def poudari_besede(naslov):
-    rezultat = ""
-    poudari = False  # ali smo med * *
+def poudari_besede(naslov):                                  # poudari besede med zvezdicama
+    rezultat = ""                                            # sestavljeni niz
+    poudari = False                                          # ali smo med * *
 
-    for znak in naslov:
-        if znak == "*":
-            poudari = not poudari  # preklopimo stanje
+    for znak in naslov:                                      # za vsak znak
+        if znak == "*":                                      # zvezdica preklopi stanje
+            poudari = not poudari
         else:
-            if poudari:
+            if poudari:                                      # znotraj poudarjenega dela
                 rezultat += znak.upper()
             else:
                 rezultat += znak
 
     return rezultat
+
+# ---------------------------------------------------------------------------
+# POVZETEK: upper() za velike črke; join za združevanje; zvezdice označijo
+# besede, ki jih poudari_besede pretvori v velike črke.
+# ---------------------------------------------------------------------------
 
 
 

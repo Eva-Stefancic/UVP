@@ -19,6 +19,11 @@
 #     >>> a.matrika 
 #     [[1], [2]]
 # =============================================================================
+class Matrika:
+    def __init__(self, matrika):                             # shrani kopijo matrike
+        self.matrika = [vrstica[:] for vrstica in matrika]   # globoka kopija
+        self.visina = len(self.matrika)                      # število vrstic
+        self.sirina = len(self.matrika[0])                   # število stolpcev
 
 # =====================================================================@027763=
 # 2. podnaloga
@@ -29,6 +34,8 @@
 #     >>> Matrika([[1], [2]]) == Matrika([[1], [2], [3]])
 #     False
 # =============================================================================
+    def __eq__(self, other):                                 # primerjava matrik
+        return self.matrika == other.matrika
 
 # =====================================================================@027764=
 # 3. podnaloga
@@ -42,6 +49,8 @@
 #     1, 2
 #     222, 1
 # =============================================================================
+    def __str__(self):                                       # lep izpis matrike
+        return "\n".join(", ".join(str(el) for el in vrstica) for vrstica in self.matrika)
 
 # =====================================================================@027765=
 # 4. podnaloga
@@ -59,6 +68,11 @@
 #     >>> print(Matrika([[1, 2, 3]]) + Matrika([[1, 2, 3]]))
 #     2 4 6
 # =============================================================================
+    def __add__(self, other):                                # seštevanje matrik
+        nova = [[self.matrika[i][j] + other.matrika[i][j]
+                 for j in range(self.sirina)]
+                for i in range(self.visina)]
+        return Matrika(nova)
 
 # =====================================================================@027766=
 # 5. podnaloga
@@ -69,8 +83,16 @@
 #     -1
 #     4
 # =============================================================================
+    def __mul__(self, other):                                # množenje istoležnih elementov
+        nova = [[self.matrika[i][j] * other.matrika[i][j]
+                 for j in range(self.sirina)]
+                for i in range(self.visina)]
+        return Matrika(nova)
 
-
+# ---------------------------------------------------------------------------
+# POVZETEK: razred Matrika z __init__, __eq__, __str__, __add__, __mul__;
+# matrika je seznam seznamov, shranimo kopijo.
+# ---------------------------------------------------------------------------
 
 
 

@@ -8,11 +8,12 @@
 #     >>> vsota_kvadratov(10)
 #     385
 # =============================================================================
-import math
+def vsota_kvadratov(n):                                      # vsota 1^2 + 2^2 + ... + n^2
+    vsota = 0                                                # začetna vsota je 0
+    for i in range(1, n + 1):                                # gremo od 1 do n
+        vsota += i ** 2                                       # prištejemo kvadrat
+    return vsota                                             # vrnemo rezultat
 
-def vsota_kvadratov(n):
-    niz = ""
-    return math.sqrt(vsota_kvadratov[0]) += 
 # =====================================================================@001475=
 # 2. podnaloga
 # Sestavite funkcijo `vsota_produktov_sosednjih(n)`, ki izračuna in vrne vsoto
@@ -21,6 +22,11 @@ def vsota_kvadratov(n):
 #     >>> vsota_produktov_sosednjih(10)
 #     440
 # =============================================================================
+def vsota_produktov_sosednjih(n):                            # vsota i*(i+1) za i=1..n
+    vsota = 0                                                # začetna vsota
+    for i in range(1, n + 1):                                # za vsako i
+        vsota += i * (i + 1)                                 # prištej produkt sosednjih
+    return vsota                                             # vrnemo vsoto
 
 # =====================================================================@001476=
 # 3. podnaloga
@@ -32,6 +38,16 @@ def vsota_kvadratov(n):
 #     >>> stevilo_clenov(20)
 #     3
 # =============================================================================
+def stevilo_clenov(m):                                       # koliko členov še ne preseže m
+    if m <= 0:                                               # pri negativnem ali 0 ni členov
+        return 0
+    vsota = 0                                                # trenutna vsota
+    n = 0                                                    # število členov
+    while True:                                              # dodajamo člene
+        n += 1                                               # naslednji člen
+        vsota += n * (n + 1)                                 # prištej n*(n+1)
+        if vsota > m:                                        # če presežemo mejo
+            return n - 1                                     # vrni prejšnje število členov
 
 # =====================================================================@001477=
 # 4. podnaloga
@@ -44,6 +60,28 @@ def vsota_kvadratov(n):
 #     >>> najblizje(10, 20, 10000)
 #     14
 # =============================================================================
+def delna_vsota(k, t):                                       # vsota t členov z začetkom k
+    return sum((k + i) * (k + i + 1) for i in range(t))      # k*(k+1) + (k+1)*(k+2) + ...
+
+def najblizje(a, b, m):                                      # k med a in b z najbližjo delno vsoto
+    najboljsi_k = a                                          # začetni kandidat
+    najboljsa_razlika = float("inf")                         # najmanjša razlika do m
+    for k in range(a, b + 1):                                # preizkusimo vsak k
+        t = 1                                                # število členov v delni vsoti
+        vsota = delna_vsota(k, t)                            # prva delna vsota
+        while vsota <= m + najboljsa_razlika or t == 1:       # dokler je smiselno iskati
+            razlika = abs(vsota - m)                           # razdalja od cilja m
+            if razlika < najboljsa_razlika or (razlika == najboljsa_razlika and k < najboljsi_k):
+                najboljsa_razlika = razlika                  # shranimo boljši kandidat
+                najboljsi_k = k
+            t += 1                                           # naslednja delna vsota
+            vsota = delna_vsota(k, t)
+    return najboljsi_k                                       # najmanjši najboljši k
+
+# ---------------------------------------------------------------------------
+# POVZETEK: vsote z zankami; delna_vsota za zaporedje k*(k+1)+...;
+# najblizje išče k z delno vsoto najbližjo m.
+# ---------------------------------------------------------------------------
 
 
 

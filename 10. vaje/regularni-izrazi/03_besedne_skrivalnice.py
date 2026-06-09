@@ -26,8 +26,7 @@
 # Predpostavite lahko, da zaporedni besedi, ki se začneta z veliko začetnico,
 # predstavljata ime in priimek.
 # =============================================================================
-def malce_anonimiziraj(besedilo):
-    return re.sub(r"([A-ZČŠŽ][a-zčšž]+ [A-ZČŠŽ])[a-zčšž]+", r"\1.", besedilo)
+import re
 
 def inicialka(zadetek):
     return zadetek.group(1) + "."
@@ -77,7 +76,10 @@ def cenzura(besedilo, nedopustne_besede):
     vzorec = "|".join(nedopustne_besede)
     return re.sub(vzorec, xxxx, besedilo, flags=re.IGNORECASE)
 
-
+# ---------------------------------------------------------------------------
+# POVZETEK: re.sub z nadomestno funkcijo; malce_anonimiziraj skrajša priimke;
+# po_papajsko podvoji samoglasnike; cenzura z re.IGNORECASE.
+# ---------------------------------------------------------------------------
 
 
 

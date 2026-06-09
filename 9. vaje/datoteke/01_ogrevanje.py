@@ -67,7 +67,10 @@ def groznje_z_dovolj_klicaji(seznam):  #edini parameter je seznam, ki vsebuje im
                 rezultat.append(datoteka)
     return rezultat
 
-
+# ---------------------------------------------------------------------------
+# POVZETEK: open z with za branje/pisanje; upper() in replace() za spremembe;
+# count("!") prešteje klicaje v besedilu.
+# ---------------------------------------------------------------------------
 
 
 

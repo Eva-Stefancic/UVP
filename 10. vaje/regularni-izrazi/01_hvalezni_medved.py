@@ -22,6 +22,8 @@
 #     >>> najdi_besede("Naj da denar, preden pojde", "de")
 #     {"denar", "preden", "pojde"}
 # =============================================================================
+import re
+
 def najdi_besede(niz, podniz):
     return set(re.findall(r"\w*" + podniz + r"\w*", niz))
 # =====================================================================@033399=
@@ -66,7 +68,10 @@ def dvojne_crke(niz):
         rezultat.add(zadetek.group())
     return rezultat
 
-
+# ---------------------------------------------------------------------------
+# POVZETEK: re.findall z \b (meja besede) in \w (črke); skupine (\w)\1 za
+# dvojne črke; set za množico rezultatov.
+# ---------------------------------------------------------------------------
 
 
 

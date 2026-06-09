@@ -13,6 +13,9 @@
 # na primer `(12, "pik")` predstavlja pikovo damo,
 # `(10, "križ")` pa križevo desetko.
 # =============================================================================
+def nov_kup():                                               # klasičen kup 52 kart
+    barve = ["srce", "kara", "pik", "križ"]                  # štiri barve
+    return [(st, barva) for st in range(2, 15) for barva in barve]  # 2-14 za vsako barvo
 
 # =====================================================================@024229=
 # 2. podnaloga
@@ -21,6 +24,10 @@
 # 
 # Pomagate si lahko s funkcijo `shuffle` iz modula `random`.
 # =============================================================================
+import random
+
+def premesaj(karte):                                         # naključno premeša karte na mestu
+    random.shuffle(karte)                                    # shuffle spremeni seznam direktno
 
 # =====================================================================@024230=
 # 3. podnaloga
@@ -35,12 +42,25 @@
 #     >>> razdeli_karte(["Ana", "Bine", "Cene"], karte)
 #     {'Cene': [(13, 'srce'), (5, 'križ')], 'Bine': [(8, 'kara'), (3, 'kara')], 'Ana': [(9, 'srce'), (6, 'križ')]}
 # =============================================================================
+def razdeli_karte(igralci, karte):                           # vsakemu igralcu 2 karti
+    slovar = {}                                              # slovar igralec -> karte
+    for ime in igralci:                                      # za vsakega igralca
+        slovar[ime] = [karte.pop(0), karte.pop(0)]           # vzamemo 2 zgornji karti
+    return slovar                                            # vrnemo slovar
 
 # =====================================================================@024231=
 # 4. podnaloga
 # Sestavite funkcijo `odpri_skupne_karte(karte)`, ki s seznama kart odstrani
 # vrhnjih pet kart in jih vrne kot seznam.
 # =============================================================================
+def odpri_skupne_karte(karte):                               # odstrani in vrne 5 skupnih kart
+    if len(karte) > 5:                                       # če je več kot 5 kart
+        skupne = karte[1:6]                                  # preskočimo prvo, vzamemo 5
+        del karte[1:6]                                       # odstranimo teh 5
+    else:                                                    # natanko 5 kart
+        skupne = karte[:5]                                   # vzamemo vseh 5
+        del karte[:5]                                        # odstranimo vseh 5
+    return skupne                                            # vrnemo skupne karte
 
 # =====================================================================@024232=
 # 5. podnaloga
@@ -51,6 +71,10 @@
 #     >>> na_dva_dela([(10, 'križ'), (12, 'srce'), (12, 'pik'), (10, 'kara'), (12, 'križ')])
 #     ([10, 12, 12, 10, 12], ['križ', 'srce', 'pik', 'kara', 'križ'])
 # =============================================================================
+def na_dva_dela(karte):                                      # loči številke in barve
+    stevilke = [karta[0] for karta in karte]                 # seznam številk
+    barve = [karta[1] for karta in karte]                    # seznam barv
+    return stevilke, barve                                   # oba seznama
 
 # =====================================================================@024233=
 # 6. podnaloga
@@ -62,6 +86,11 @@
 #     >>> tvorijo_lestvico([(10, 'križ'), (12, 'srce'), (11, 'križ')])
 #     True
 # =============================================================================
+def tvorijo_lestvico(karte):                                 # ali številke tvorijo zaporedje
+    stevilke = sorted(karta[0] for karta in karte)           # urejene številke
+    if len(set(stevilke)) != len(karte):                     # podvojene številke
+        return False
+    return stevilke[-1] - stevilke[0] == len(stevilke) - 1   # zaporedne brez lukenj
 
 # =====================================================================@024234=
 # 7. podnaloga
@@ -72,6 +101,11 @@
 #     >>> kolikokrat_se_pojavi_katera_stevilka([(10, 'križ'), (12, 'srce'), (12, 'pik'), (10, 'kara'), (12, 'križ')])
 #     {10: 2, 12: 3}
 # =============================================================================
+def kolikokrat_se_pojavi_katera_stevilka(karte):             # frekvence številk
+    slovar = {}                                              # številka -> število pojavitev
+    for karta in karte:                                      # za vsako karto
+        slovar[karta[0]] = slovar.get(karta[0], 0) + 1      # povečamo števec
+    return slovar                                            # slovar frekvenc
 
 # =====================================================================@024235=
 # 8. podnaloga
@@ -94,6 +128,29 @@
 #     >>> vrednost([(10, 'križ'), (12, 'srce'), (12, 'pik'), (10, 'kara'), (12, 'križ')])
 #     7
 # =============================================================================
+def vrednost(peterka):                                       # kvaliteta petih kart (1-9)
+    stevilke, barve = na_dva_dela(peterka)                   # ločimo številke in barve
+    frekvence = kolikokrat_se_pojavi_katera_stevilka(peterka)  # pojavitve številk
+    stevci = sorted(frekvence.values(), reverse=True)        # urejeno padajoče
+    enaka_barva = len(set(barve)) == 1                       # ali so vse karte iste barve
+    lestvica = tvorijo_lestvico(peterka)                     # ali je lestvica
+    if enaka_barva and lestvica:                             # barvna lestvica
+        return 9
+    if stevci[0] == 4:                                       # poker (štiri enake)
+        return 8
+    if stevci[0] == 3 and stevci[1] == 2:                    # full house
+        return 7
+    if enaka_barva:                                          # barva (flush)
+        return 6
+    if lestvica:                                             # lestvica (straight)
+        return 5
+    if stevci[0] == 3:                                       # tris
+        return 4
+    if stevci[0] == 2 and stevci[1] == 2:                    # dva para
+        return 3
+    if stevci[0] == 2:                                       # en par
+        return 2
+    return 1                                                 # visoka karta
 
 # =====================================================================@024236=
 # 9. podnaloga
@@ -102,6 +159,10 @@
 # 
 # Pomagate si lahko s funkcijo `combinations` iz modula `itertools`.
 # =============================================================================
+from itertools import combinations
+
+def ovrednoti(karte):                                        # najboljša peterka iz kart
+    return max(vrednost(peterka) for peterka in combinations(karte, 5))  # max po vseh peterkah
 
 # =====================================================================@024237=
 # 10. podnaloga
@@ -115,8 +176,21 @@
 #     Bine 3 [(4, 'križ'), (2, 'srce')]
 #     Cene 7 [(10, 'kara'), (12, 'križ')]
 # =============================================================================
+def poker(imena):                                            # celotna igra pokra
+    karte = nov_kup()                                        # nov kup
+    premesaj(karte)                                          # premešamo
+    igralci = razdeli_karte(imena, karte)                    # razdelimo po 2 karte
+    skupne = odpri_skupne_karte(karte)                       # 5 skupnih kart
+    print(skupne)                                            # izpišemo skupne karte
+    for ime in imena:                                        # za vsakega igralca
+        karte_igralca = igralci[ime]                         # njegovi 2 karti
+        tocke = ovrednoti(karte_igralca + skupne)              # najboljša kombinacija 7 kart
+        print(ime, tocke, karte_igralca)                     # ime, točke, karte
 
-
+# ---------------------------------------------------------------------------
+# POVZETEK: nov_kup, premesaj (random.shuffle), razdeli_karte, odpri_skupne_karte;
+# vrednost oceni peterko; ovrednoti z itertools.combinations; poker izpiše rezultate.
+# ---------------------------------------------------------------------------
 
 
 

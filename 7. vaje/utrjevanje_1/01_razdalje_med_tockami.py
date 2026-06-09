@@ -10,8 +10,8 @@
 # =============================================================================
 import math
 
-def ravninska_razdalja(x1, y1, x2, y2):
-    return math.sqrt((x2 - x1)**2 + (y2 - y1)**2)
+def ravninska_razdalja(x1, y1, x2, y2):                     # razdalja med dvema točkama v ravnini
+    return math.sqrt((x2 - x1)**2 + (y2 - y1)**2)          # Pitagorov izrek
 # =====================================================================@027817=
 # 2. podnaloga
 # Sestavite funkcijo `polarna_razdalja(r1, fi1, r2, fi2)`, ki vrne
@@ -23,11 +23,15 @@ def ravninska_razdalja(x1, y1, x2, y2):
 # =============================================================================
 import math
 
-def polarna_razdalja(r1, fi1, r2, fi2):
-    fi1_rad = math.radians(fi1)    # stopinje v radiane
+def polarna_razdalja(r1, fi1, r2, fi2):                      # razdalja v polarnih koordinatah
+    fi1_rad = math.radians(fi1)                              # stopinje v radiane
     fi2_rad = math.radians(fi2)
-    
-    return math.sqrt(r1**2 + r2**2 - 2*r1*r2*math.cos(fi2_rad - fi1_rad))
+    return math.sqrt(r1**2 + r2**2 - 2*r1*r2*math.cos(fi2_rad - fi1_rad))  # kosinusni izrek
+
+# ---------------------------------------------------------------------------
+# POVZETEK: math.sqrt, math.radians, math.cos; ravninska razdalja z Pitagoro;
+# polarna razdalja z kosinusnim izrekom.
+# ---------------------------------------------------------------------------
 
 
 

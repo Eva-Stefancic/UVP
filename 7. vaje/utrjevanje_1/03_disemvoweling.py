@@ -28,12 +28,12 @@
 #     >>> prvi_samoglasnik('Krščen matiček!')
 #     4
 # =============================================================================
-def prvi_samoglasnik(niz):
-    samoglasniki = "aeiouAEIOU"
-    for i, znak in enumerate(niz):
-        if znak in samoglasniki:
+def prvi_samoglasnik(niz):                                   # indeks prvega samoglasnika
+    samoglasniki = "aeiouAEIOU"                              # množica samoglasnikov
+    for i, znak in enumerate(niz):                           # z indeksom
+        if znak in samoglasniki:                             # če je samoglasnik
             return i
-    return -1
+    return -1                                                # ni samoglasnika
 
 # =====================================================================@024226=
 # 2. podnaloga
@@ -44,18 +44,18 @@ def prvi_samoglasnik(niz):
 #     >>> disemvowel('Banana je dobra!')
 #     'Bnn j dbr!aaaeoa'
 # =============================================================================
-def disemvowel(sporocilo):
+def disemvowel(sporocilo):                                   # samoglasnike prestavi na konec
     samoglasniki = "aeiouAEIOU"
-    soglasnik_in_drugo = ""
-    samoglasnik = ""
+    soglasnik_in_drugo = ""                                  # ostali znaki
+    samoglasnik = ""                                         # zbrani samoglasniki
     
-    for crka in sporocilo:
+    for crka in sporocilo:                                   # za vsako črko
         if crka in samoglasniki:
-            samoglasnik += crka
+            samoglasnik += crka                              # zberi samoglasnik
         else:
-            soglasnik_in_drugo += crka
+            soglasnik_in_drugo += crka                       # ohrani ostalo
     
-    return soglasnik_in_drugo + samoglasnik
+    return soglasnik_in_drugo + samoglasnik                  # združi oba dela
 # =====================================================================@024227=
 # 3. podnaloga
 # Včasih pa želimo sporočilo dešifrirati, saj nas zanima njegova vsebina.
@@ -75,21 +75,26 @@ def disemvowel(sporocilo):
 #     'Banana je dobra!'
 # =============================================================================
 
-def razveljavi_disemvowel(niz):
+def razveljavi_disemvowel(niz):                              # vrne samoglasnike na mesta zvezdic
     samoglasniki = "aeiouAEIOU"
-    sam = [z for z in niz if z in samoglasniki]    # poberemo vse samoglasnike iz konca
-    indeks = 0
+    sam = [z for z in niz if z in samoglasniki]              # samoglasniki na koncu
+    indeks = 0                                               # kateri samoglasnik je na vrsti
     
     popravljeno = ""
     
-    for znak in niz:
-        if znak == "*":
+    for znak in niz:                                         # za vsak znak
+        if znak == "*":                                      # zvezdica -> samoglasnik
             popravljeno += sam[indeks]
             indeks += 1
-        elif znak not in samoglasniki:
+        elif znak not in samoglasniki:                       # ostali znaki ostanejo
             popravljeno += znak
     
     return popravljeno
+
+# ---------------------------------------------------------------------------
+# POVZETEK: disemvoweling prestavi samoglasnike na konec; razveljavi_disemvowel
+# z zvezdicami vrne originalno besedilo.
+# ---------------------------------------------------------------------------
 
 
 

@@ -15,8 +15,23 @@
 # 
 # ni pravilna, saj izpiše le svojo prvo vrstico, ne pa tudi druge.
 # =============================================================================
+def izpisem_se():                                            # izpiše lastno kodo funkcije
+    with open(__file__, encoding="utf-8") as datoteka:       # odpremo to datoteko
+        vrstice = datoteka.readlines()                       # preberemo vrstice
+    zacetek = 0
+    for i, vrstica in enumerate(vrstice):                    # poiščemo začetek funkcije
+        if vrstica.startswith("def izpisem_se():"):
+            zacetek = i
+            break
+    for i in range(zacetek, len(vrstice)):                 # do konca datoteke
+        if i > zacetek and vrstice[i] and vrstice[i][0] not in " \t\n":  # konec funkcije
+            break
+        print(vrstice[i], end="")                            # izpišemo vrstico
 
-
+# ---------------------------------------------------------------------------
+# POVZETEK: __file__ je pot do trenutne datoteke; open/readlines za branje;
+# izpisem_se izpiše lastno izvorno kodo.
+# ---------------------------------------------------------------------------
 
 
 

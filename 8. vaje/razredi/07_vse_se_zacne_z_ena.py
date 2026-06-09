@@ -16,6 +16,19 @@
 #     >>> [next(g) for i in range(5)]
 #     ['1', '11', '21', '1211', '111221']
 # =============================================================================
+def poglej_in_povej():                                       # generator "poglej in povej"
+    niz = "1"                                                # začetni člen
+    while True:                                              # neskončen generator
+        yield niz                                            # vrni trenutni člen
+        novi = ""                                            # naslednji člen
+        i = 0
+        while i < len(niz):                                  # preštej skupine enakih
+            stevilo = 1
+            while i + stevilo < len(niz) and niz[i + stevilo] == niz[i]:
+                stevilo += 1
+            novi += str(stevilo) + niz[i]                    # število + znak
+            i += stevilo
+        niz = novi                                           # posodobi za naslednji korak
 
 # =====================================================================@001929=
 # 2. podnaloga
@@ -34,8 +47,21 @@
 #     >>> [next(g) for x in range(20)]
 #     [1, 2, 1, 3, 1, 2, 1, 4, 1, 2, 1, 3, 1, 2, 1, 5, 1, 2, 1, 3]
 # =============================================================================
+def ravnilo():                                               # zaporedje "ravnilo"
+    zaporedje = [1]                                          # začetno zaporedje
+    yield 1                                                  # prvi člen
+    n = 2                                                    # naslednji nov člen
+    while True:
+        yield n                                                # izpiši nov člen
+        for x in zaporedje:                                    # ponovi celotno prejšnje zaporedje
+            yield x
+        zaporedje = zaporedje + [n] + zaporedje               # razširi zaporedje
+        n += 1
 
-
+# ---------------------------------------------------------------------------
+# POVZETEK: poglej_in_povej generira opisne nize; ravnilo ponavlja prejšnje
+# člene pred vsakim novim naravnim številom.
+# ---------------------------------------------------------------------------
 
 
 

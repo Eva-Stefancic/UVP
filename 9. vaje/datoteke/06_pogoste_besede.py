@@ -19,10 +19,6 @@
 # =============================================================================
 
 def najpogostejse_besede(vhod, st_besed, izhod):
-    pass       # Tomo nima testnih primerov za to nalogo, tako, da lahko podamo karkoli. Spodaj je navedena prava rešitev.
-
-
-def najpogostejse_besede(vhod, st_besed, izhod):
     vse_besede = [] # Seznam vseh besed
     brez_ponovitev = [] # Seznam besed brez ponovitev
     with open(vhod, encoding='utf-8') as f:
@@ -50,7 +46,10 @@ def najpogostejse_besede(vhod, st_besed, izhod):
         for s, beseda in pari:
             print(beseda, -s, file=f)
 
-
+# ---------------------------------------------------------------------------
+# POVZETEK: branje datoteke z open; split in lower za besede; sort parov
+# (-frekvenca, beseda) za padajoče urejanje; pisanje v izhodno datoteko.
+# ---------------------------------------------------------------------------
 
 
 

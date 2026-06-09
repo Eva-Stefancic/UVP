@@ -101,12 +101,14 @@ def uredi(teze, starosti):
     for i in range(len(teze)):
         z = Zajec(teze[i], starosti[i])
         seznam.append(z)
-    seznam.sort()
+    seznam.sort()                                            # uredi po __lt__
 
     return seznam
-        
 
-
+# ---------------------------------------------------------------------------
+# POVZETEK: razred Zajec z atributoma teza, starost; __lt__ za primerjavo;
+# uredi ustvari zajce in jih uredi z sort().
+# ---------------------------------------------------------------------------
 
 
 

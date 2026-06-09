@@ -28,17 +28,15 @@ def gcd(m,n):
 #     4
 # =============================================================================
 class Ulomek:
-    def __init__(self, st, im):
-        d = gcd(st, im)
-        st //= d
-        im //= d
-        if im < 0:
-            st *= (-1)
-            im *= (-1)
-        self.st = st
-        self.im = im
-    
-
+    def __init__(self, st, im):                              # konstruktor z okrajšanjem
+        if im == 0:                                          # imenovalec ne sme biti 0
+            raise ValueError("Imenovalec ne sme biti 0")
+        if im < 0:                                           # predznak v števec
+            st *= -1
+            im *= -1
+        d = gcd(st, im)                                      # največji skupni delitelj
+        self.st = st // d                                    # okrajšan števec
+        self.im = im // d                                    # okrajšan imenovalec
 
 # =====================================================================@001733=
 # 3. podnaloga
@@ -49,18 +47,6 @@ class Ulomek:
 #     >>> print(u)
 #     1/4
 # =============================================================================
-    
-    def __init__(self, st, im):
-        if im == 0:
-            raise ValueError("Imenovalec ne sme biti 0")
-        if im < 0:
-            st *= (-1)
-            im *= (-1)
-            
-        d = gcd(st, im)
-        self.st = st // d
-        self.im = im // d
-
     def __str__(self):
         return f"{self.st}/{self.im}"
     
@@ -96,7 +82,11 @@ class Ulomek:
 #     >>> Ulomek(1, 6) + Ulomek(1, 4)
 #     Ulomek(5, 12)
 # =============================================================================
-    def __add__(self, other):
+    def __add__(self, other):                                # seštevanje ulomkov
+        st = self.st * other.im + other.st * self.im          # skupni imenovalec
+        im = self.im * other.im
+        return Ulomek(st, im)
+
 # =====================================================================@001737=
 # 7. podnaloga
 # Definirajte metodo  `__sub__`, ki vrne razliko dveh ulomkov.
@@ -106,6 +96,10 @@ class Ulomek:
 #     >>> Ulomek(1, 4) - Ulomek(1, 6)
 #     Ulomek(1, 12)
 # =============================================================================
+    def __sub__(self, other):                                # odštevanje ulomkov
+        st = self.st * other.im - other.st * self.im
+        im = self.im * other.im
+        return Ulomek(st, im)
 
 # =====================================================================@001738=
 # 8. podnaloga
@@ -116,6 +110,8 @@ class Ulomek:
 #     >>> Ulomek(1, 3) * Ulomek(1, 2)
 #     Ulomek(1, 6)
 # =============================================================================
+    def __mul__(self, other):                                # množenje ulomkov
+        return Ulomek(self.st * other.st, self.im * other.im)
 
 # =====================================================================@001739=
 # 9. podnaloga
@@ -126,6 +122,8 @@ class Ulomek:
 #     >>> Ulomek(1, 6) / Ulomek(1, 4)
 #     Ulomek(2, 3)
 # =============================================================================
+    def __truediv__(self, other):                            # deljenje ulomkov
+        return Ulomek(self.st * other.im, self.im * other.st)
 
 # =====================================================================@001740=
 # 10. podnaloga
@@ -138,6 +136,18 @@ class Ulomek:
 # 
 # Ali je izračunana vrednost blizu števila $e$?
 # =============================================================================
+def priblizek(n):                                            # približek števila e
+    vsota = Ulomek(0, 1)                                     # začnemo z 0
+    fakulteta = 1                                            # 0! = 1
+    for i in range(n + 1):                                   # od 0! do n!
+        vsota += Ulomek(1, fakulteta)                        # prištej 1/i!
+        fakulteta *= i + 1                                   # naslednja fakulteta
+    return vsota
+
+# ---------------------------------------------------------------------------
+# POVZETEK: gcd; razred Ulomek z __add__, __sub__, __mul__, __truediv__;
+# priblizek sešteje ulomke 1/n! za približek e.
+# ---------------------------------------------------------------------------
 
 
 

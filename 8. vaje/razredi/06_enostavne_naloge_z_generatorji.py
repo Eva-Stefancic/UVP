@@ -107,7 +107,10 @@ def ucinkoviti_delitelji(n):
     for d in reversed(seznam):
         yield d
 
-
+# ---------------------------------------------------------------------------
+# POVZETEK: generatorji z yield; stevke, potence_naravnih, fakultete, collatz,
+# delitelji in učinkoviti_delitelji (iskanje do sqrt(n)).
+# ---------------------------------------------------------------------------
 
 
 

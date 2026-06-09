@@ -124,9 +124,11 @@ def rezultati(vhodna, izhodna):
             skupna_vsota += vsota
             izhod.write(f",{vsota / len(podatki):.2f}")
         izhod.write(f",{skupna_vsota / len(podatki):.2f}")
-    
 
-
+# ---------------------------------------------------------------------------
+# POVZETEK: split in int za CSV; nalozi_csv bere vrstice; sum za vsote;
+# sort po priimku; print z sep="," za izpis stolpcev.
+# ---------------------------------------------------------------------------
 
 
 

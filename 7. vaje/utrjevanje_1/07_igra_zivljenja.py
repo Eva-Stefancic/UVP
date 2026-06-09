@@ -46,6 +46,17 @@
 # _Opomba_: Kot je za Python običajno, se stolpci in vrstice začnejo
 # številčiti pri 0.
 # =============================================================================
+def zivi(svet, i, j):                                        # število živih sosedov celice (i, j)
+    stevilo = 0                                              # števec sosedov
+    for di in (-1, 0, 1):                                    # premik po vrsticah
+        for dj in (-1, 0, 1):                                # premik po stolpcih
+            if di == 0 and dj == 0:                          # preskočimo sami sebe
+                continue
+            vi, vj = i + di, j + dj                          # koordinate soseda
+            if 0 <= vi < len(svet) and 0 <= vj < len(svet[0]):  # sosed je znotraj matrike
+                if svet[vi][vj]:                             # če je sosed živ
+                    stevilo += 1
+    return stevilo                                           # vrnemo število
 
 # =====================================================================@027814=
 # 2. podnaloga
@@ -63,6 +74,18 @@
 #      [False, False, False, False, False, False],
 #      [False, False, False, False, False, False]]
 # =============================================================================
+def igra(svet):                                              # novo stanje po enem koraku
+    visina = len(svet)                                       # število vrstic
+    sirina = len(svet[0])                                    # število stolpcev
+    novo = [[False] * sirina for _ in range(visina)]         # prazna matrika
+    for i in range(visina):                                  # za vsako celico
+        for j in range(sirina):
+            sosedi = zivi(svet, i, j)                        # živi sosedi
+            if svet[i][j]:                                   # živa celica
+                novo[i][j] = sosedi in (2, 3)                # preživi pri 2 ali 3 sosedih
+            else:                                            # mrtva celica
+                novo[i][j] = sosedi == 3                     # oživi pri natanko 3 sosedih
+    return novo                                              # nova matrika
 
 # =====================================================================@027815=
 # 3. podnaloga
@@ -96,8 +119,21 @@
 # _Nasvet_: Najprej napišite pomožno funkcijo, ki prešteje število živih
 # celic v matriki.
 # =============================================================================
+def stevilo_zivih(svet):                                     # prešteje žive celice v matriki
+    return sum(celica for vrstica in svet for celica in vrstica if celica)  # vsota True vrednosti
 
+def populacija(svet, n):                                     # število živih po n korakih
+    rezultat = [stevilo_zivih(svet)]                         # začetno stanje
+    trenutni = svet                                          # trenutna matrika
+    for _ in range(n):                                       # n korakov igre
+        trenutni = igra(trenutni)                            # naslednje stanje
+        rezultat.append(stevilo_zivih(trenutni))             # preštej žive
+    return rezultat                                          # seznam dolžine n+1
 
+# ---------------------------------------------------------------------------
+# POVZETEK: zivi prešteje sosede; igra uporabi pravila Conwaya;
+# populacija vrne število živih v vsakem koraku.
+# ---------------------------------------------------------------------------
 
 
 

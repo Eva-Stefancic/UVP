@@ -98,8 +98,11 @@ def koliko_urejen(vhodna, izhodna):
     with open(izhodna, "w", encoding = "utf-8") as izhod:
         for ime, stevec in pari:
             print(ime, stevec, file=izhod)
-    
 
+# ---------------------------------------------------------------------------
+# POVZETEK: split(",") za ločevanje imen; count za frekvence; open za datoteke;
+# sort z lambda za urejanje po frekvenci in abecedi.
+# ---------------------------------------------------------------------------
 
 
 
