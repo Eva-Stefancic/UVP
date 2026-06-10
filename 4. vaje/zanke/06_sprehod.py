@@ -138,7 +138,7 @@ def hitri(tek):
     
     for znak in tek:             
 
-        if znak.isdigit():       
+        if znak.isdigit():       # isalpha = ali je znak črka?
             dolzina = int(znak)  # Če je znak števka, jo pretvorimo v število in shranimo kot dolžino.
 
         elif znak == "S":        

@@ -18,7 +18,17 @@
 #     >>> komplement('ATGgCTA')
 #     None
 # =============================================================================
+def komplement(dna):                                # Definiramo funkcijo, ki prejme zaporedje DNA.
+    pari = {"A": "T", "T": "A", "G": "C", "C": "G"} # Ustvarimo slovar veznih nukleotidov.
+    rezultat = ""                                   # Ustvarimo prazen niz za komplement.
 
+    for znak in dna:                                # Gremo čez vsak znak v zaporedju DNA.
+        if znak not in pari:                        # Preverimo, ali znak ni veljaven nukleotid.
+            return None                             # Če znak ni veljaven, vrnemo None.
+
+        rezultat += pari[znak]                      # Dodamo vezni nukleotid v rezultat.
+
+    return rezultat                                 # Vrnemo komplement zaporedja DNA.
 # =====================================================================@043020=
 # 2. podnaloga
 # *Bralni okvir* je ena od treh možnosti branja zaporedja DNA v obliki 
@@ -35,7 +45,19 @@
 #     >>> bralni_okvir('xTGATTCA', 2)
 #     None
 # =============================================================================
+def bralni_okvir(dna, indeks):                      # Definiramo funkcijo za izpis bralnega okvirja.
+    dovoljeni = "ATGC"                              # Shranimo dovoljene nukleotide.
+    kodoni = []                                     # Ustvarimo prazen seznam za kodone.
 
+    for znak in dna:                                # Gremo čez vsak znak v zaporedju DNA.
+        if znak not in dovoljeni:                   # Preverimo, ali znak ni veljaven nukleotid.
+            return None                             # Če znak ni veljaven, vrnemo None.
+
+    for i in range(indeks, len(dna) - 2, 3):         # Beremo od danega indeksa naprej po tri znake.
+        kodon = dna[i:i + 3]                        # Izrežemo tri zaporedne nukleotide.
+        kodoni.append(kodon)                        # Kodon dodamo v seznam kodonov.
+
+    return kodoni                                   # Vrnemo seznam kodonov v bralnem okvirju.
 # =====================================================================@043022=
 # 3. podnaloga
 # V DNA zaporedju se gen začne z začetnim kodonom `ATG` in konča pri prvem
@@ -53,11 +75,46 @@
 # 
 # Namig: Zanko predčasno končamo z ukazom `break`.
 # =============================================================================
+def najdaljsi_gen(okvir):                           # Definiramo funkcijo za iskanje najdaljšega gena.
+    stop_kodoni = ["TAA", "TAG", "TGA"]             # Shranimo seznam stop kodonov.
+    najdaljsi = None                                # Na začetku še nimamo najdaljšega gena.
+
+    for i in range(len(okvir)):                     # Gremo čez vse indekse v bralnem okvirju.
+        if okvir[i] == "ATG":                       # Preverimo, ali se na tem mestu začne gen.
+            for j in range(i + 1, len(okvir)):      # Od začetnega kodona naprej iščemo stop kodon.
+                if okvir[j] in stop_kodoni:         # Preverimo, ali smo našli stop kodon.
+                    gen = okvir[i:j + 1]            # Izrežemo gen od začetnega do stop kodona.
+
+                    if najdaljsi is None or len(gen) > len(najdaljsi): # Preverimo, ali je ta gen daljši.
+                        najdaljsi = gen             # Shranimo nov najdaljši gen.
+
+                    break                           # Končamo iskanje prvega stop kodona za ta gen.
+
+    return najdaljsi                                # Vrnemo najdaljši gen ali None.
 
 
 
 
-
+# DNA je niz, sestavljen samo iz znakov "A", "T", "G" in "C".
+# Nukleotida A in T sta vezna nukleotida.
+# Nukleotida G in C sta vezna nukleotida.
+# Komplement DNA dobimo tako, da vsak nukleotid zamenjamo z njegovim parom.
+# Neveljaven znak pomeni, da vhodni niz ni pravilno zaporedje DNA.
+# V takem primeru funkcija vrne None.
+# Slovar lahko uporabimo za preslikavo enega znaka v drugega.
+# Z zanko for lahko pregledamo vsak znak v nizu.
+# Niz lahko gradimo z dodajanjem znakov z operatorjem +=.
+# Kodon je skupina treh zaporednih nukleotidov.
+# Bralni okvir pove, kje začnemo brati kodone.
+# Funkcija range(zacetek, konec, korak) omogoča branje po korakih.
+# Izrez dna[i:i + 3] vrne tri zaporedne znake od indeksa i naprej.
+# Nepopolnih kodonov na koncu zaporedja ne upoštevamo.
+# Gen se začne s kodonom "ATG".
+# Gen se konča s prvim stop kodonom po začetnem kodonu.
+# Stop kodoni so "TAA", "TAG" in "TGA".
+# Ukaz break predčasno konča trenutno zanko.
+# Če najdaljših genov obstaja več, obdržimo prvega najdenega.
+# Če gena ni, funkcija vrne None.
 
 
 

@@ -30,7 +30,17 @@
 #     >>> repr(dvigalo)
 #     'Dvigalo(3, [1, 5, 0, 4])'
 # =============================================================================
+class Dvigalo:                                      # Definiramo razred Dvigalo.
+    def __init__(self, nadstropje=0, postanki=None): # Definiramo konstruktor s privzetim pritličjem.
+        self.nadstropje = nadstropje               # Shranimo trenutno nadstropje dvigala.
 
+        if postanki is None:                       # Preverimo, ali seznam postankov ni bil podan.
+            postanki = []                          # Če ni bil podan, ustvarimo prazen seznam.
+
+        self.postanki = postanki                   # Shranimo seznam postankov dvigala.
+
+    def __repr__(self):                            # Definiramo znakovni prikaz objekta.
+        return f"Dvigalo({self.nadstropje}, {self.postanki})" # Vrnemo opis dvigala.
 # =====================================================================@042994=
 # 2. podnaloga
 # Razredu `Dvigalo` dodajte metodo `razdalja`, ki izračuna in vrne razdaljo
@@ -42,7 +52,29 @@
 #     >>> dvigalo.razdalja(2)
 #     17
 # =============================================================================
+class Dvigalo:                                      # Definiramo razred Dvigalo.
+    def __init__(self, nadstropje=0, postanki=None): # Definiramo konstruktor s privzetim pritličjem.
+        self.nadstropje = nadstropje               # Shranimo trenutno nadstropje dvigala.
 
+        if postanki is None:                       # Preverimo, ali seznam postankov ni bil podan.
+            postanki = []                          # Če ni bil podan, ustvarimo prazen seznam.
+
+        self.postanki = postanki                   # Shranimo seznam postankov dvigala.
+
+    def __repr__(self):                            # Definiramo znakovni prikaz objekta.
+        return f"Dvigalo({self.nadstropje}, {self.postanki})" # Vrnemo opis dvigala.
+
+    def razdalja(self, nadstropje):                # Definiramo metodo za izračun razdalje.
+        trenutni_polozaj = self.nadstropje         # Začnemo pri trenutnem nadstropju dvigala.
+        skupna_razdalja = 0                        # Na začetku je skupna razdalja enaka 0.
+
+        for postanek in self.postanki:             # Gremo čez vse že načrtovane postanke.
+            skupna_razdalja += abs(trenutni_polozaj - postanek) # Prištejemo razdaljo do postanka.
+            trenutni_polozaj = postanek            # Trenutni položaj prestavimo na ta postanek.
+
+        skupna_razdalja += abs(trenutni_polozaj - nadstropje) # Prištejemo razdaljo do klicanega nadstropja.
+
+        return skupna_razdalja                     # Vrnemo skupno razdaljo.
 # =====================================================================@042995=
 # 3. podnaloga
 # Sestavite še funkcijo `klic(nadstropje, dvigala)`, ki v seznamu dvigal 
@@ -53,10 +85,40 @@
 #     >>> klic(3, [dvigalo, Dvigalo()])
 #     1
 # =============================================================================
+def klic(nadstropje, dvigala):                      # Definiramo funkcijo za izbiro najbližjega dvigala.
+    indeks_najblizjega = 0                          # Za začetek vzamemo prvo dvigalo.
+    najmanjsa_razdalja = dvigala[0].razdalja(nadstropje) # Izračunamo razdaljo prvega dvigala.
+
+    for indeks in range(1, len(dvigala)):           # Pregledamo še vsa ostala dvigala.
+        razdalja = dvigala[indeks].razdalja(nadstropje) # Izračunamo razdaljo trenutnega dvigala.
+
+        if razdalja < najmanjsa_razdalja:           # Preverimo, ali je trenutno dvigalo bližje.
+            najmanjsa_razdalja = razdalja           # Shranimo novo najmanjšo razdaljo.
+            indeks_najblizjega = indeks             # Shranimo indeks najbližjega dvigala.
+
+    return indeks_najblizjega                       # Vrnemo indeks najbližjega dvigala.
 
 
 
 
+# Razred je načrt za izdelavo objektov.
+# Objekt je posamezen primerek razreda.
+# Konstruktor __init__ se izvede ob ustvarjanju novega objekta.
+# Beseda self predstavlja trenutni objekt.
+# Atributi hranijo podatke o objektu.
+# Metode so funkcije, ki pripadajo razredu.
+# Metoda __repr__ določa, kako se objekt prikaže z repr().
+# Privzete vrednosti parametrov uporabimo, kadar argument ni podan.
+# Namesto privzetega praznega seznama je varneje uporabiti None.
+# Seznam lahko hranimo kot atribut objekta.
+# Funkcija abs() vrne absolutno vrednost števila.
+# Razdaljo med nadstropjema izračunamo z absolutno razliko.
+# Z zanko for lahko pregledamo vse elemente seznama.
+# Funkcija range() nam omogoča zanko po indeksih.
+# Funkcija len() vrne dolžino seznama.
+# Indeks pove položaj elementa v seznamu.
+# Če iščemo najmanjšo vrednost, si sproti zapomnimo trenutno najboljšo.
+# Pri enakih razdaljah ne spreminjamo indeksa, zato ostane izbrano prvo najbližje dvigalo.
 
 
 

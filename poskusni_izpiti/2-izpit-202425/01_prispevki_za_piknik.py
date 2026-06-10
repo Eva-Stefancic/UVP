@@ -31,7 +31,16 @@
 #         "kajmak": 3
 #     }
 # =============================================================================
+def zbrano(prispevki):                              # Definiramo funkcijo, ki prejme slovar prispevkov.
+    skupaj = {}                                     # Ustvarimo prazen slovar za skupne količine.
 
+    for stvari in prispevki.values():               # Gremo čez slovarje stvari posameznih oseb.
+        for stvar, kolicina in stvari.items():      # Gremo čez vsako stvar in njeno količino.
+            if stvar not in skupaj:                 # Preverimo, ali stvari še ni v slovarju skupaj.
+                skupaj[stvar] = 0                   # Če je še ni, jo dodamo z začetno vrednostjo 0.
+            skupaj[stvar] += kolicina               # K skupni količini prištejemo novo količino.
+
+    return skupaj                                   # Vrnemo slovar vseh zbranih stvari.
 # =====================================================================@042999=
 # 2. podnaloga
 # Prijatelje zanima, koliko je posameznik prispeval k uspehu piknika. V slovarju
@@ -54,7 +63,18 @@
 #         "Francka": 0
 #     }
 # =============================================================================
+def prispevki_oseb(prispevki, cene):                # Definiramo funkcijo, ki prejme prispevke in cene.
+    vrednosti = {}                                  # Ustvarimo prazen slovar za vrednosti oseb.
 
+    for oseba, stvari in prispevki.items():         # Gremo čez vsako osebo in njene stvari.
+        skupna_cena = 0                             # Za vsako osebo začnemo s skupno ceno 0.
+
+        for stvar, kolicina in stvari.items():      # Gremo čez vsako stvar in njeno količino.
+            skupna_cena += kolicina * cene[stvar]   # Količino pomnožimo s ceno in prištejemo.
+
+        vrednosti[oseba] = skupna_cena              # Osebi pripišemo skupno vrednost prispevkov.
+
+    return vrednosti                                # Vrnemo slovar vrednosti po osebah.
 # =====================================================================@043000=
 # 3. podnaloga
 # Da bodo pikniki v prihodnje bolj pravični, so se odločili, da preverijo dolg
@@ -75,7 +95,38 @@
 #         "Francka": 12.9
 #     }
 # =============================================================================
+def dolzniki(prispevki, cene):                      # Definiramo funkcijo, ki prejme prispevke in cene.
+    vrednosti = prispevki_oseb(prispevki, cene)     # Izračunamo vrednost prispevkov vsake osebe.
+    skupna_vrednost = sum(vrednosti.values())       # Seštejemo vrednosti vseh prispevkov.
+    stevilo_oseb = len(prispevki)                   # Preštejemo vse udeležence piknika.
+    pravicni_delez = skupna_vrednost / stevilo_oseb # Izračunamo pravičen delež za eno osebo.
+    dolgovi = {}                                    # Ustvarimo prazen slovar za dolžnike.
 
+    for oseba, vrednost in vrednosti.items():       # Gremo čez vsako osebo in njen prispevek.
+        dolg = pravicni_delez - vrednost            # Izračunamo, koliko ji manjka do pravičnega deleža.
+
+        if dolg > 0:                                # Osebo dodamo samo, če ima dolg.
+            dolgovi[oseba] = round(dolg, 2)         # Dolg zaokrožimo na dve decimalki.
+
+    return dolgovi                                  # Vrnemo slovar oseb, ki imajo dolg.
+
+
+# Slovar je podatkovna struktura, ki hrani pare ključ : vrednost.
+# Do vrednosti v slovarju dostopamo s ključem, na primer cene["radler"].
+# Slovarji so lahko gnezdeni, kar pomeni, da je vrednost lahko nov slovar.
+# Metoda .items() vrne pare ključev in vrednosti iz slovarja.
+# Metoda .values() vrne samo vrednosti iz slovarja.
+# Z zanko for lahko pregledamo vse elemente slovarja.
+# Pogoj if uporabimo, kadar želimo nekaj narediti samo v določenem primeru.
+# Izraz if stvar not in skupaj preveri, ali ključa še ni v slovarju.
+# Vrednosti lahko seštevamo z operatorjem +=.
+# Skupno ceno dobimo tako, da količino pomnožimo s ceno.
+# Funkcija sum() sešteje vse vrednosti v podanem zaporedju.
+# Funkcija len() vrne število elementov.
+# Funkcija round() zaokroži število na izbrano število decimalk.
+# Funkcija return vrne rezultat funkcije.
+# Pri pravičnem deležu skupno vrednost delimo s številom oseb.
+# Dolžniki so samo tisti, katerih prispevek je manjši od pravičnega deleža.
 
 
 

@@ -21,7 +21,40 @@
 # Igralno ploščo predstavite s tabelo na sledeč način: če je na dani koordinati ladjica
 # naj bo na tem mestu znak lojtra `'#'`, sicer pa naj bo na tej koordinati presledek `' '`.
 # =============================================================================
+def preberi_ladjice(vhodna, dimenzija):                  # Definiramo funkcijo za branje ladjic iz datoteke.
+    plosca = []                                          # Ustvarimo prazen seznam za igralno ploščo.
 
+    for _ in range(dimenzija):                           # Ponavljamo tolikokrat, kolikor je vrstic na plošči.
+        plosca.append([" "] * dimenzija)                 # Dodamo vrstico, napolnjeno s presledki.
+
+    with open(vhodna, "r", encoding="utf-8") as datoteka: # Odpremo vhodno datoteko za branje.
+        for vrstica_datoteke in datoteka:                # Gremo čez vsako vrstico v datoteki.
+            vrstica_datoteke = vrstica_datoteke.strip()  # Odstranimo znak za novo vrstico.
+
+            if vrstica_datoteke == "":                   # Preverimo, ali je vrstica prazna.
+                continue                                 # Prazno vrstico preskočimo.
+
+            podatki = vrstica_datoteke.split(",")        # Vrstico razdelimo po vejicah.
+            vrstica = int(podatki[0]) - 1                # Vrstico pretvorimo v indeks od 0 naprej.
+            stolpec = int(podatki[1]) - 1                # Stolpec pretvorimo v indeks od 0 naprej.
+            smer = podatki[2]                            # Shranimo smer ladjice.
+            dolzina = int(podatki[3])                    # Dolžino ladjice pretvorimo v celo število.
+
+            if smer == ">":                              # Preverimo, ali je ladjica obrnjena v desno.
+                zadnji_stolpec = stolpec + dolzina - 1   # Izračunamo indeks zadnjega stolpca ladjice.
+
+                if 0 <= vrstica < dimenzija and 0 <= stolpec and zadnji_stolpec < dimenzija: # Preverimo, ali je ladjica v celoti na plošči.
+                    for i in range(dolzina):             # Gremo čez vsa polja ladjice.
+                        plosca[vrstica][stolpec + i] = "#" # Na ustrezno mesto zapišemo del ladjice.
+
+            elif smer == "v":                            # Preverimo, ali je ladjica obrnjena navzdol.
+                zadnja_vrstica = vrstica + dolzina - 1   # Izračunamo indeks zadnje vrstice ladjice.
+
+                if 0 <= stolpec < dimenzija and 0 <= vrstica and zadnja_vrstica < dimenzija: # Preverimo, ali je ladjica v celoti na plošči.
+                    for i in range(dolzina):             # Gremo čez vsa polja ladjice.
+                        plosca[vrstica + i][stolpec] = "#" # Na ustrezno mesto zapišemo del ladjice.
+
+    return plosca                                        # Vrnemo izdelano igralno ploščo.
 # =====================================================================@042984=
 # 2. podnaloga
 # Za lepšo vizalno predstavitev bomo igralno ploščo predstavili na preprostejši način. To bomo storili tako, da vsebino plošče strnemo v niz,
@@ -47,7 +80,19 @@
 # v datoteko `izhodna` zapiše vizualizirano igralno ploščo. Predpostavite lahko, da je igralna
 # plošča kvadratna.
 # =============================================================================
+def vizualiziraj(plosca, izhodna):                  # Definiramo funkcijo za zapis vizualizirane plošče.
+    dimenzija = len(plosca)                         # Dolžina plošče nam pove njeno dimenzijo.
+    vrstice = []                                    # Ustvarimo prazen seznam za vrstice izpisa.
 
+    vrstice.append("/" + "-" * dimenzija + "\\")    # Dodamo zgornji rob plošče.
+
+    for vrstica in plosca:                          # Gremo čez vsako vrstico igralne plošče.
+        vrstice.append("|" + "".join(vrstica) + "|") # Vrstico pretvorimo v niz in dodamo stranska robova.
+
+    vrstice.append("\\" + "-" * dimenzija + "/")    # Dodamo spodnji rob plošče.
+
+    with open(izhodna, "w", encoding="utf-8") as datoteka: # Odpremo izhodno datoteko za pisanje.
+        datoteka.write("\n".join(vrstice))          # V datoteko zapišemo vse vrstice, ločene z novo vrstico.
 # =====================================================================@042983=
 # 3. podnaloga
 # Na podoben način kot sta zabeležila postavitev ladjic bosta Ana in Žiga zabeležila še strele, tj., v vsako vrstico (druge)
@@ -63,7 +108,53 @@
 # če je strel zadel eno od ladjic na to mesto postavimo `'X'`, če pa je zadel prazno polje
 # na to mesto zapišemo `'.'`. Strele, ki so izven igralne plošče, preskočite.
 # =============================================================================
+def streljaj(streli, plosca, dimenzija):                 # Definiramo funkcijo za obdelavo strelov.
+    igralna_plosca = preberi_ladjice(plosca, dimenzija)  # Najprej preberemo postavitev ladjic.
 
+    with open(streli, "r", encoding="utf-8") as datoteka: # Odpremo datoteko s streli za branje.
+        for vrstica_datoteke in datoteka:                # Gremo čez vsako vrstico v datoteki.
+            vrstica_datoteke = vrstica_datoteke.strip()  # Odstranimo znak za novo vrstico.
+
+            if vrstica_datoteke == "":                   # Preverimo, ali je vrstica prazna.
+                continue                                 # Prazno vrstico preskočimo.
+
+            podatki = vrstica_datoteke.split(",")        # Vrstico razdelimo po vejici.
+            vrstica = int(podatki[0]) - 1                # Vrstico pretvorimo v indeks od 0 naprej.
+            stolpec = int(podatki[1]) - 1                # Stolpec pretvorimo v indeks od 0 naprej.
+
+            if 0 <= vrstica < dimenzija and 0 <= stolpec < dimenzija: # Preverimo, ali je strel znotraj plošče.
+                if igralna_plosca[vrstica][stolpec] == "#": # Preverimo, ali je strel zadel ladjico.
+                    igralna_plosca[vrstica][stolpec] = "X" # Zadetek označimo z X.
+                else:                                    # Sicer je strel zadel prazno polje.
+                    igralna_plosca[vrstica][stolpec] = "." # Zgrešen strel označimo s piko.
+
+    return igralna_plosca                                # Vrnemo ploščo po izvedenih strelih.
+
+
+
+# Datoteko odpremo s funkcijo open().
+# Način "r" pomeni branje datoteke.
+# Način "w" pomeni pisanje v datoteko.
+# Ukaz with poskrbi, da se datoteka po uporabi pravilno zapre.
+# Z zanko for lahko beremo datoteko vrstico po vrstico.
+# Metoda strip() odstrani odvečne presledke in znak za novo vrstico.
+# Metoda split(",") razdeli niz na dele glede na vejico.
+# Funkcija int() pretvori niz v celo število.
+# Igralno ploščo lahko predstavimo kot seznam seznamov.
+# Zunanji seznam predstavlja vrstice igralne plošče.
+# Notranji seznami predstavljajo posamezna polja v vrstici.
+# Do polja na plošči dostopamo z zapisom plosca[vrstica][stolpec].
+# Znak "#" predstavlja del ladjice.
+# Znak " " predstavlja prazno polje.
+# Znak "X" predstavlja zadeto ladjico.
+# Znak "." predstavlja zgrešen strel.
+# Funkcija len() vrne dolžino seznama.
+# Metoda join() združi elemente seznama v en niz.
+# Ukaz continue preskoči trenutno ponovitev zanke.
+# Pogoj if uporabimo za preverjanje, ali je nekaj res.
+# Pogoj elif uporabimo za dodatno možnost po prvem pogoju.
+# Koordinate morajo biti znotraj meja igralne plošče.
+# Ladjico, ki pade čez rob plošče, preskočimo.
 
 
 
