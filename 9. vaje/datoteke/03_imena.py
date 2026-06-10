@@ -15,7 +15,7 @@
 # 
 #     >>> kolikokrat_se_pojavi('Alojz,Samo,Peter,Alojz,Franci', 'Alojz')
 #     2
-#    #niz pretvorimo v seznam imen in preštejemo oolikokrat se ime pojavi
+#    #niz pretvorimo v seznam imen in preštejemo kolikokrat se ime pojavi
 # =============================================================================
 def kolikokrat_se_pojavi(niz, ime):
     return niz.split(",").count(ime)
@@ -80,24 +80,28 @@ def koliko_iz_datoteke(vhodna, izhodna):
 #     Luka 2
 #     Jaka 1
 # =============================================================================
-def pomozna_funkcija(par):
-    return (-par[1], par[0])                 
 
-def koliko_urejen(vhodna, izhodna):
-    with open(vhodna, "r", encoding = "utf-8") as vhod:
-        niz = vhod.read().strip().replace("\n", ",")
-    vsa_imena = niz.split(",")
-    razlicna_imena = []
-    for ime in vsa_imena:
-        if ime not in razlicna_imena:
-            razlicna_imena.append(ime)
-    pari = []
-    for ime in razlicna_imena:
-            pari.append((ime, vsa_imena.count(ime)))
-    pari.sort(key=lambda par: (-par[1], par[0]))                                
-    with open(izhodna, "w", encoding = "utf-8") as izhod:
-        for ime, stevec in pari:
-            print(ime, stevec, file=izhod)
+def pomozna_funkcija(par):                                     # Definiramo pomožno funkcijo, ki prejme par podatkov.
+    return (-par[1], par[0])                                   # Vrnemo ključ za urejanje po številu padajoče in imenu naraščajoče.
+
+def koliko_urejen(vhodna, izhodna):                            # Definiramo funkcijo, ki prejme ime vhodne in izhodne datoteke.
+    with open(vhodna, "r", encoding = "utf-8") as vhod:         # Odpremo vhodno datoteko za branje.
+        niz = vhod.read().strip().replace("\n", ",")            # Preberemo vsebino, odstranimo robne presledke in vrstice zamenjamo z vejicami.
+    vsa_imena = niz.split(",")                                  # Niz razdelimo po vejicah in dobimo seznam vseh imen.
+    razlicna_imena = []                                         # Ustvarimo prazen seznam za različna imena.
+    for ime in vsa_imena:                                       # Gremo čez vsako ime v seznamu vseh imen.
+        if ime not in razlicna_imena:                           # Preverimo, ali imena še ni med različnimi imeni.
+            razlicna_imena.append(ime)                          # Če ga še ni, ga dodamo v seznam različnih imen.
+    pari = []                                                   # Ustvarimo prazen seznam za pare imena in števila pojavitev.
+    for ime in razlicna_imena:                                  # Gremo čez vsako različno ime.
+            pari.append((ime, vsa_imena.count(ime)))            # Dodamo par z imenom in številom njegovih pojavitev.
+    pari.sort(key=lambda par: (-par[1], par[0]))                # Pare uredimo po številu pojavitev padajoče, nato po imenu naraščajoče.
+    with open(izhodna, "w", encoding = "utf-8") as izhod:        # Odpremo izhodno datoteko za pisanje.
+        for ime, stevec in pari:                                # Gremo čez urejene pare imena in števila pojavitev.
+            print(ime, stevec, file=izhod)                      # V izhodno datoteko zapišemo ime in število pojavitev.
+
+
+# strip() je metoda za nize, ki odstrani presledke in znake za novo vrstico na začetku in koncu niza.
 
 # ---------------------------------------------------------------------------
 # POVZETEK: split(",") za ločevanje imen; count za frekvence; open za datoteke;
